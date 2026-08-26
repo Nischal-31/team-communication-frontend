@@ -1,0 +1,24 @@
+export function getCurrentUsername(): string | null {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        return null;
+    }
+
+    try {
+        const payload = token.split(".")[1];
+
+        const decoded = JSON.parse(
+            atob(
+                payload
+                    .replace(/-/g, "+")
+                    .replace(/_/g, "/")
+            )
+        );
+
+        return decoded.sub ?? null;
+
+    } catch {
+        return null;
+    }
+}
